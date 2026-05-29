@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="camera-viewport-grid animate-fade-in">
+    <div class="card-glow camera-feed-card">
+        <div class="card-header">
+            <h3>Live Verification Terminal</h3>
+            <div class="camera-controls-row">
+                <div class="form-toggle-switch">
+                    <input type="checkbox" id="mirror-mode-toggle" checked>
+                    <label for="mirror-mode-toggle">Mirror Mode</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scanner-container">
+            <!-- Hidden webcam capture stream -->
+            <video id="webcam-stream" autoplay playsinline class="hidden"></video>
+            
+            <!-- Mirror/Scanning Drawing Matrix Canvas -->
+            <div class="canvas-wrapper">
+                <canvas id="scanner-canvas" width="640" height="480"></canvas>
+                
+                <!-- Premium Scanning overlay indicators -->
+                <div class="scanner-laser-line animate-laser-sweep"></div>
+                <div class="scanner-corner corner-tl"></div>
+                <div class="scanner-corner corner-tr"></div>
+                <div class="scanner-corner corner-bl"></div>
+                <div class="scanner-corner corner-br"></div>
+            </div>
+        </div>
+        
+        <div class="camera-footer">
+            <div class="tolerance-adjustment-widget">
+                <div class="widget-label">
+                    <span>Recognition Match Tolerance</span>
+                    <span id="tolerance-val" class="text-gradient">0.60</span>
+                </div>
+                <input type="range" id="tolerance-slider" min="0.3" max="0.8" step="0.05" value="0.6" class="slider-cyan">
+                <span class="tolerance-legend">Lower values are more strict; higher values are more lenient.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Session Scans Verified Logs -->
+    <div class="card-glow active-scans-card">
+        <div class="card-header">
+            <h3>Verification Session Logs</h3>
+            <span class="badge badge-success" id="session-count-badge">0 verified</span>
+        </div>
+        
+        <div class="verification-scroller" id="session-logs-scroller">
+            <!-- Session scan records pushed dynamically here -->
+            <div class="session-empty-state" id="session-empty-placeholder">
+                <i class="fa-solid fa-circle-play text-gradient"></i>
+                <p>Allow camera access to start scanning and logging verified check-ins in real-time.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+{% endblock %}

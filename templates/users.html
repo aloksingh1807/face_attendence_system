@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="users-workspace animate-fade-in">
+    <!-- Top actions bar -->
+    <div class="workspace-header-actions">
+        <div class="search-filter-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="user-search-input" placeholder="Search registered profiles...">
+        </div>
+        <button class="btn btn-primary" id="open-enroll-modal-btn">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Register New User</span>
+        </button>
+    </div>
+
+    <!-- Profiles Grid -->
+    <div class="users-directory-grid" id="users-directory-container">
+        <!-- Rendered dynamically via users.js -->
+        <div class="directory-loading">
+            <i class="fa-solid fa-spinner fa-spin text-gradient"></i>
+            <p>Loading member directory...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Premium Profile Registration Modal Dialog -->
+<div class="modal-backdrop hidden" id="enroll-modal">
+    <div class="modal-card animate-fade-in">
+        <div class="modal-header">
+            <h3>Register New Profile</h3>
+            <button class="modal-close-btn" id="close-enroll-modal-btn">&times;</button>
+        </div>
+        
+        <form id="enroll-user-form">
+            <div class="modal-body">
+                <div class="enroll-grid-layout">
+                    <!-- Left Column: Snapshot capture and crop previews -->
+                    <div class="enroll-capture-section">
+                        <span class="section-label">Face Snapshot capture</span>
+                        <div class="capture-viewport-container">
+                            <video id="modal-webcam" autoplay playsinline></video>
+                            <canvas id="modal-capture-canvas" class="hidden" width="320" height="240"></canvas>
+                            <img id="capture-preview-img" class="hidden" src="" alt="Capture Snapshot">
+                            
+                            <div class="capture-overlay-grid"></div>
+                        </div>
+                        
+                        <div class="capture-controls">
+                            <button type="button" class="btn btn-secondary" id="capture-snapshot-btn">
+                                <i class="fa-solid fa-camera"></i> Take Photo
+                            </button>
+                            <button type="button" class="btn btn-dark hidden" id="reset-capture-btn">
+                                <i class="fa-solid fa-arrows-rotate"></i> Retake
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Personal details forms inputs -->
+                    <div class="enroll-fields-section">
+                        <div class="form-group-field">
+                            <label for="enroll-name">Full Name</label>
+                            <input type="text" id="enroll-name" class="form-input-field" placeholder="e.g. Alok Singh" required>
+                        </div>
+                        
+                        <div class="form-group-field">
+                            <label for="enroll-email">Email Address</label>
+                            <input type="email" id="enroll-email" class="form-input-field" placeholder="e.g. alok@company.com" required>
+                        </div>
+                        
+                        <div class="form-group-field">
+                            <label for="enroll-role">Access Role Group</label>
+                            <select id="enroll-role" class="form-select-field">
+                                <option value="Employee" selected>Employee</option>
+                                <option value="Visitor">Visitor / Contractor</option>
+                                <option value="Admin">Administrator</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="cancel-enroll-btn">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="submit-enroll-btn" disabled>
+                    <i class="fa-solid fa-square-check"></i> Register Member
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/users.js') }}"></script>
+{% endblock %}

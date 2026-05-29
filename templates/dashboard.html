@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% from 'components/stats_card.html' import render_stats_card %}
+
+{% block content %}
+<div class="dashboard-grid animate-fade-in">
+    <!-- Row 1: KPI Stats Grid -->
+    <div class="kpi-grid">
+        {{ render_stats_card("Enrolled Members", stats.total_users, "fa-solid fa-users", "Total registered employee face profiles", "trend-up", "+2 new profiles") }}
+        {{ render_stats_card("Today Check-ins", stats.today_present, "fa-solid fa-user-check", "Verified present members today", "trend-up", "Updated live") }}
+        {{ render_stats_card("Active Alerts", stats.active_alerts, "fa-solid fa-triangle-exclamation", "Unresolved security visitor breaches", "trend-danger", "Immediate review required") }}
+    </div>
+
+    <!-- Row 2: Analytics Trend & Scanner Audit Feed -->
+    <div class="charts-feed-container">
+        <!-- Weekly Attendance Trend Widget -->
+        <div class="card-glow trend-chart-card">
+            <div class="card-header">
+                <h3>Weekly Verification Trends</h3>
+                <span class="badge badge-primary">Last 7 Days</span>
+            </div>
+            
+            <div class="weekly-trend-bars-container">
+                {% for day in stats.weekly_trend %}
+                <div class="trend-column">
+                    <div class="bar-pair">
+                        <!-- Present Bar -->
+                        <div class="bar bar-present" style="height: {{ day.present * 25 }}px;" title="Present: {{ day.present }}">
+                            <span class="bar-value">{{ day.present }}</span>
+                        </div>
+                        <!-- Unknown Bar -->
+                        <div class="bar bar-unknown" style="height: {{ day.unknown * 25 }}px;" title="Unrecognized: {{ day.unknown }}">
+                            <span class="bar-value">{{ day.unknown }}</span>
+                        </div>
+                    </div>
+                    <span class="trend-day-label">{{ day.day }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <span class="legend-dot dot-present"></span>
+                    <span>Enrolled Employees (Present)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot dot-unknown"></span>
+                    <span>Unrecognized Intruder Scans</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Events Activity Feed Panel -->
+        <div class="card-glow feed-card">
+            <div class="card-header">
+                <h3>Real-Time Activity Feed</h3>
+                <div class="pulse-indicator">
+                    <span class="indicator-dot"></span>
+                    <span>Live Feed</span>
+                </div>
+            </div>
+            
+            <div class="activity-feed-list" id="activity-feed-scroller">
+                {% if stats.recent_logs %}
+                    {% for log in stats.recent_logs %}
+                    <div class="feed-item {% if log.status == 'Unknown' %}feed-item-danger animate-pulse-glow{% endif %}">
+                        <div class="feed-item-icon">
+                            {% if log.status == 'Present' %}
+                                <i class="fa-solid fa-circle-check"></i>
+                            {% else %}
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="feed-item-details">
+                            <span class="feed-item-title">{{ log.name }}</span>
+                            <span class="feed-item-time">{{ log.timestamp }}</span>
+                        </div>
+                        
+                        <div class="feed-item-badge">
+                            <span class="badge {% if log.status == 'Present' %}badge-success{% else %}badge-danger{% endif %}">
+                                {{ log.status }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-feed-state">
+                        <i class="fa-solid fa-inbox"></i>
+                        <p>No activity logged today yet.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

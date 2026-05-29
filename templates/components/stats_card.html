@@ -1,0 +1,19 @@
+{% macro render_stats_card(title, value, icon, subtitle, trend_class=None, trend_text=None) %}
+<div class="stats-card card-glow animate-fade-in">
+    <div class="stats-card-main">
+        <div class="stats-card-details">
+            <span class="stats-title">{{ title }}</span>
+            <span class="stats-value">{{ value }}</span>
+        </div>
+        <div class="stats-icon-box">
+            <i class="{{ icon }}"></i>
+        </div>
+    </div>
+    <div class="stats-card-footer">
+        {% if trend_class %}
+            <span class="stats-trend {{ trend_class }}">{{ trend_text }}</span>
+        {% endif %}
+        <span class="stats-subtitle">{{ subtitle }}</span>
+    </div>
+</div>
+{% endmacro %}

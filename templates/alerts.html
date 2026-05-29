@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="alerts-workspace animate-fade-in">
+    <!-- Filters actions bar -->
+    <div class="workspace-header-actions">
+        <div class="filter-dropdown-widget">
+            <label for="alerts-status-filter">Alert status group:</label>
+            <select id="alerts-status-filter" class="form-select-filter">
+                <option value="Unresolved" selected>Unresolved Security Breaches</option>
+                <option value="Resolved">Resolved Intrusion logs</option>
+                <option value="">All Alerts History</option>
+            </select>
+        </div>
+        
+        <div id="real-time-badge" class="real-time-badge animate-pulse-glow">
+            <span class="badge-dot"></span>
+            <span>Real-time Stream Connected</span>
+        </div>
+    </div>
+
+    <!-- Active Intrusion Alerts Grid List -->
+    <div class="alerts-directory-grid" id="alerts-directory-container">
+        <!-- Rendered dynamically via alerts.js -->
+        <div class="directory-loading">
+            <i class="fa-solid fa-spinner fa-spin text-gradient"></i>
+            <p>Scanning intrusion alert databases...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+{% endblock %}

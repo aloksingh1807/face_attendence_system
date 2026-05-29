@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="logs-workspace animate-fade-in">
+    <!-- Filters actions bar -->
+    <div class="workspace-header-actions">
+        <div class="search-filter-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="logs-search-input" placeholder="Search logs by name/email...">
+        </div>
+        
+        <div class="filter-dropdown-widget">
+            <label for="logs-status-filter">Verification status:</label>
+            <select id="logs-status-filter" class="form-select-filter">
+                <option value="" selected>All Records</option>
+                <option value="Present">Present (Verified)</option>
+                <option value="Unknown">Unknown (Unrecognized)</option>
+            </select>
+        </div>
+        
+        <a href="{{ url_for('attendance.export_logs') }}" class="btn btn-primary" id="export-logs-csv-btn">
+            <i class="fa-solid fa-file-csv"></i>
+            <span>Export to CSV</span>
+        </a>
+    </div>
+
+    <!-- Attendance History Logs Table Card -->
+    <div class="card-glow table-card">
+        <div class="table-responsive">
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th>Log ID</th>
+                        <th>User Photo</th>
+                        <th>Enrolled Name</th>
+                        <th>Registered Email</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="logs-table-body">
+                    <!-- Loaded dynamically via js -->
+                    <tr>
+                        <td colspan="6" class="table-loading-row">
+                            <i class="fa-solid fa-spinner fa-spin text-gradient"></i>
+                            <p>Loading attendance verification history...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Reuse general script main.js filters inside table loaders -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("logs-search-input");
+        const statusFilter = document.getElementById("logs-status-filter");
+        const tableBody = document.getElementById("logs-table-body");
+        
+        function loadLogs() {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="table-loading-row">
+                        <i class="fa-solid fa-spinner fa-spin text-gradient"></i>
+                        <p>Loading attendance verification history...</p>
+                    </td>
+                </tr>
+            `;
+            
+            const params = new URLSearchParams();
+            if (searchInput.value) params.append("search", searchInput.value);
+            if (statusFilter.value) params.append("status", statusFilter.value);
+            
+            fetch(`/api/scan?${params.toString()}`) // Oh, wait, the endpoint is actually `/api/logs`
+            // Let's fetch from `/api/logs` which we defined in attendance_routes.py
+            fetch(`/api/logs?${params.toString()}`)
+                .then(res => res.json())
+                .then(data => {
+                    tableBody.innerHTML = "";
+                    if (data.length === 0) {
+                        tableBody.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="table-empty-row">
+                                    <i class="fa-solid fa-inbox text-gradient"></i>
+                                    <p>No verification records match your filters.</p>
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    data.forEach(log => {
+                        const tr = document.createElement("tr");
+                        const statusClass = log.status === 'Present' ? 'badge-success' : 'badge-danger';
+                        const photoImg = log.photo_path 
+                            ? `<img class="table-avatar" src="/${log.photo_path}" alt="Scan Avatar">` 
+                            : `<div class="table-avatar-placeholder"><i class="fa-solid fa-user-ninja"></i></div>`;
+                        
+                        tr.innerHTML = `
+                            <td>#${log.id}</td>
+                            <td>${photoImg}</td>
+                            <td><span class="table-bold-name">${log.scan_name}</span></td>
+                            <td>${log.email || 'N/A'}</td>
+                            <td><i class="fa-regular fa-calendar-days text-gradient"></i> ${log.timestamp}</td>
+                            <td><span class="badge ${statusClass}">${log.status}</span></td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                })
+                .catch(err => {
+                    console.error("Error loading logs:", err);
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="table-error-row">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <p>Failed loading attendance logs from database.</p>
+                            </td>
+                        </tr>
+                    `;
+                });
+        }
+        
+        searchInput.addEventListener("input", debounce(loadLogs, 300));
+        statusFilter.addEventListener("change", loadLogs);
+        
+        loadLogs();
+        
+        // Simple debounce helper
+        function debounce(func, delay) {
+            let timer;
+            return function(...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+    });
+</script>
+{% endblock %}

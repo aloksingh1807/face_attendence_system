@@ -1,0 +1,41 @@
+<header class="top-navbar">
+    <div class="navbar-left">
+        <h1 class="page-title">
+            {% if active_page == 'dashboard' %}
+                Control Dashboard
+            {% elif active_page == 'camera' %}
+                Real-Time Scanner Viewport
+            {% elif active_page == 'users' %}
+                Employee Profile Directory
+            {% elif active_page == 'logs' %}
+                Check-in Logs Audit
+            {% elif active_page == 'alerts' %}
+                Intrusion Detection Center
+            {% else %}
+                Admin Panel
+            {% endif %}
+        </h1>
+        <p class="page-subtitle text-gradient">Smart Face Recognition Attendance System</p>
+    </div>
+    
+    <div class="navbar-right">
+        <!-- Live Connection Status Badge Indicator -->
+        <div id="sse-status" class="status-indicator animate-pulse-glow" title="SSE Broadcast Channel">
+            <span class="status-dot"></span>
+            <span id="sse-status-text" class="status-text text-gradient">Online</span>
+        </div>
+        
+        <div class="navbar-actions">
+            <!-- Intrusion Alerts Panel Dropdown Trigger Widget -->
+            <div class="notification-bell-widget" id="navbar-bell-trigger">
+                <i class="fa-solid fa-bell"></i>
+                <span id="bell-alert-badge" class="bell-badge hidden">0</span>
+            </div>
+            
+            <div class="current-time-widget">
+                <i class="fa-regular fa-clock"></i>
+                <span id="live-clock">--:--:--</span>
+            </div>
+        </div>
+    </div>
+</header>

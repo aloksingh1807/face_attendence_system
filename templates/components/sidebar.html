@@ -1,0 +1,59 @@
+<aside class="sidebar animate-fade-in">
+    <div class="sidebar-brand">
+        <div class="brand-logo animate-float">
+            <i class="fa-solid fa-expand animate-pulse-glow"></i>
+        </div>
+        <span class="brand-text">AURA SCAN</span>
+    </div>
+    
+    <nav class="sidebar-nav">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="{{ url_for('dashboard.index') }}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Overview</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('attendance.camera') }}" class="nav-link {% if active_page == 'camera' %}active{% endif %}">
+                    <i class="fa-solid fa-video"></i>
+                    <span>Scanner View</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('user.index') }}" class="nav-link {% if active_page == 'users' %}active{% endif %}">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Manage Users</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('attendance.index') }}" class="nav-link {% if active_page == 'logs' %}active{% endif %}">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Check-in Logs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('alert.index') }}" class="nav-link {% if active_page == 'alerts' %}active{% endif %}">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Intrusion Alert</span>
+                    <span id="sidebar-alert-badge" class="alert-count-badge hidden">0</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="sidebar-footer">
+        <div class="user-profile-widget">
+            <div class="user-avatar">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="user-info">
+                <span class="user-name">{{ session.get('admin_name', 'Admin') }}</span>
+                <span class="user-role">Administrator</span>
+            </div>
+        </div>
+        <a href="{{ url_for('auth.logout') }}" class="logout-btn" title="Sign Out">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+    </div>
+</aside>

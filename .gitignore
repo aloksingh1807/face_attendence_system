@@ -1,0 +1,25 @@
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python Cache and Compiled Files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Databases & Instances
+*.db
+*.sqlite3
+instance/
+
+# Local Uploads & Encoded Data
+static/uploads/profiles/profile_*.jpg
+static/uploads/alerts/alert_*.jpg
+face_data/*.pkl
+
+# macOS System Files
+.DS_Store
