@@ -47,8 +47,8 @@ def init_db(app):
         
         if admin_count == 0:
             default_admin_name = "System Admin"
-            default_admin_email = "admin@aurascan.com"
-            default_admin_pass = "admin123"
+            default_admin_email = "admin@admin.com"
+            default_admin_pass = "admin"
             
             # Salt and hash password using Werkzeug's default recommended scrypt method
             pass_hash = generate_password_hash(default_admin_pass, method="scrypt")

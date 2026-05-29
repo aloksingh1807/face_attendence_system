@@ -99,8 +99,8 @@ python app.py
 
 ### Step 5: Log in to the Admin Portal
 Go to `http://127.0.0.1:5000` in your web browser and log in using the default secure seeded admin credentials:
-*   **Email**: `admin@aurascan.com`
-*   **Password**: `admin123`
+*   **Email**: `admin@admin.com`
+*   **Password**: `admin`
 
 ---
 

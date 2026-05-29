@@ -45,7 +45,7 @@ class TestDatabaseLayer(unittest.TestCase):
         """
         with self.app.app_context():
             # Query for seeded Admin
-            admin = get_user_by_email("admin@aurascan.com")
+            admin = get_user_by_email("admin@admin.com")
             
             self.assertIsNotNone(admin)
             self.assertEqual(admin["name"], "System Admin")
@@ -61,7 +61,7 @@ class TestDatabaseLayer(unittest.TestCase):
             users = get_all_users()
             
             self.assertEqual(len(users), 1)
-            self.assertEqual(users[0]["email"], "admin@aurascan.com")
+            self.assertEqual(users[0]["email"], "admin@admin.com")
 
 if __name__ == '__main__':
     unittest.main()
