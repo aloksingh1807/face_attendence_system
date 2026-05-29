@@ -1,7 +1,7 @@
 # Aura Scan - Smart Face Recognition Attendance System
 
 A production-grade, highly structured, **Blueprint-based modular Flask application** utilizing real-time face matching, intrusion alerts, dynamic logs, and administrative controls. 
-OPEN WITH THIS
+OPEN WITH THIS 👉🏻
 {Email: admin@admin.com}
 {Password: admin}
 
